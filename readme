@@ -1,0 +1,35 @@
+# ✈️ Autonomous Flight Price Tracker
+
+This project monitors flight prices from **Porto (OPO)** to **São Paulo - Guarulhos (GRU)** and sends an automatic email alert when the price drops to or below a specified target (e.g., €400).
+
+Built with **Node.js**, using the **Skyscanner API via RapidAPI**, and configured to run daily with a **cron job on Render**.
+
+---
+
+## ✅ Features
+
+-   Queries flight prices using the Skyscanner API
+-   Checks 3 upcoming dates per run
+-   Sends email alerts when the price is low enough
+-   Runs automatically once a day (adjustable)
+
+---
+
+## 🛠️ Tech Stack
+
+-   Node.js
+-   Axios
+-   Nodemailer
+-   Dotenv
+-   Skyscanner API (via RapidAPI)
+-   Render (automated deployment & scheduling)
+
+---
+
+## 📦 Run Locally
+
+```bash
+git clone https://github.com/YOUR_USERNAME/agente-passagens.git
+cd agente-passagens
+npm install
+```
