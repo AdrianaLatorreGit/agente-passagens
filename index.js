@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 // Variáveis de ambiente
 const ORIGEM = 'OPO';
 const DESTINO = 'GRU';
-const VALOR_ALVO = 1000;
+const VALOR_ALVO = 3000;
 const NUM_DIAS = 1;
 const API_KEY = process.env.RAPIDAPI_KEY;
 const EMAIL = process.env.EMAIL;
