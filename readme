@@ -21,7 +21,7 @@ Built with **Node.js**, using the **Skyscanner API via RapidAPI**, and configure
 -   Axios
 -   Nodemailer
 -   Dotenv
--   Skyscanner API (via RapidAPI)
+-   compare-flight-prices (via RapidAPI)
 -   Render (automated deployment & scheduling)
 
 ---
