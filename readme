@@ -21,7 +21,7 @@ Built with **Node.js**, using the **Skyscanner API via RapidAPI**, and configure
 -   Axios
 -   Nodemailer
 -   Dotenv
--   compare-flight-prices (via RapidAPI)
+-   kiwi-com-cheap-flights (via RapidAPI)
 -   Render (automated deployment & scheduling)
 
 ---

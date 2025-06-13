@@ -1,0 +1,29 @@
+
+name: Agente de Passagens Diário
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Executa todos os dias às 9h UTC (~6h no Brasil)
+  workflow_dispatch:      # Permite executar manualmente também
+
+jobs:
+  run-passagem-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar bot
+        run: node index.js
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          EMAIL: ${{ secrets.EMAIL }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
