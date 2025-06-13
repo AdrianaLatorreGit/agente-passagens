@@ -1,18 +1,17 @@
-// index.js
 require('dotenv').config();
 const axios = require('axios');
 const nodemailer = require('nodemailer');
 
 // Variáveis de ambiente
-const ORIGEM = 'OPO'; // Porto
-const DESTINO = 'GRU'; // Guarulhos
+const ORIGEM = 'OPO';
+const DESTINO = 'GRU';
 const VALOR_ALVO = 1000;
-const NUM_DIAS = 3; // Verifica só 3 datas por execução
+const NUM_DIAS = 3;
 const API_KEY = process.env.RAPIDAPI_KEY;
 const EMAIL = process.env.EMAIL;
 const EMAIL_PASS = process.env.EMAIL_PASS;
 
-// Gera as datas futuras (ex: hoje, amanhã, depois)
+// Gera 3 datas futuras (hoje, amanhã, depois)
 function gerarDatasFuturas(numDias) {
     const datas = [];
     const hoje = new Date();
@@ -71,20 +70,23 @@ async function buscarPreco(data) {
         );
 
         const quotes = pollRes.data.content.results.quotes;
-        if (!quotes || quotes.length === 0) return;
+        if (!quotes || quotes.length === 0) return false;
 
         const precoMinimo = Math.min(...quotes.map((q) => q.minPrice.amount));
         console.log(`${data.day}/${data.month}/${data.year} → €${precoMinimo}`);
 
         if (precoMinimo <= VALOR_ALVO) {
             await enviarEmail(data, precoMinimo);
+            return true; // sinaliza que enviou e-mail
         }
     } catch (err) {
         console.log(`Erro em ${data.day}/${data.month}: ${err.message}`);
     }
+
+    return false; // nenhum e-mail enviado
 }
 
-// Envia e-mail quando o preço for bom
+// Envia e-mail para o destino definido
 async function enviarEmail(data, preco) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -94,7 +96,7 @@ async function enviarEmail(data, preco) {
         },
     });
 
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
         from: EMAIL,
         to: 'grasielamullermuller@gmail.com',
         subject: `🎯 Achamos passagem meu amooorr. VEM ME VER €${preco} - ${data.day}/${data.month}`,
@@ -104,11 +106,12 @@ async function enviarEmail(data, preco) {
     console.log('✅ E-mail enviado!');
 }
 
-// Roda busca completa
+// Roda busca e envia no máximo 1 e-mail por execução
 async function varrerDatas() {
     const datas = gerarDatasFuturas(NUM_DIAS);
     for (let data of datas) {
-        await buscarPreco(data);
+        const enviado = await buscarPreco(data);
+        if (enviado) break; // para após o primeiro e-mail enviado
     }
 }
 
