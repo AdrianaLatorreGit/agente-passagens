@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const ORIGEM = 'OPO';
 const DESTINO = 'GRU';
 const VALOR_ALVO = 1000;
-const NUM_DIAS = 3;
+const NUM_DIAS = 1;
 const API_KEY = process.env.RAPIDAPI_KEY;
 const EMAIL = process.env.EMAIL;
 const EMAIL_PASS = process.env.EMAIL_PASS;
@@ -69,16 +69,14 @@ async function enviarEmail(dataIso, preco) {
     await transporter.sendMail({
         from: EMAIL,
         to: 'grasielamullermuller@gmail.com',
-        subject: `🎯 Achamos passagem meu amooorr. VEM ME VER €${preco} - ${dataIso}`,
-        text: `Tem uma passagem Porto → Guarulhos por €${preco} em ${dataIso}!
-
-Corre pro comparador e aproveite!`,
+        subject: `🎯 Achamos passagem meu amooorr. VEM ME VER!! €${preco} - ${dataIso}`,
+        text: `Tem uma passagem Porto → Guarulhos por €${preco} em ${dataIso}!\n\nCorre pro comparador e aproveite!`,
     });
 
     console.log('✅ E-mail enviado!');
 }
 
-// Roda verificação
+// Roda verificação (sem repetir)
 async function varrerDatas() {
     const datas = gerarDatasFuturas(NUM_DIAS);
     for (let dataIso of datas) {
@@ -87,6 +85,4 @@ async function varrerDatas() {
     }
 }
 
-// Roda agora e a cada 24h
 varrerDatas();
-setInterval(varrerDatas, 24 * 60 * 60 * 1000);
